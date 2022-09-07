@@ -1,0 +1,88 @@
+@startuml Architecture
+
+package MVC {
+    class Model
+
+    class View {
+        -tk_root: tkinter.Tk
+        -size: tuple
+        -controller: Controller
+        -change_text_view: ChangeTextView
+        -change_inner_data_view: ChangeInnerDataView
+
+        +set_controller(controller: Controller)
+        +change_state_label(state_label: str)
+        +change_text(text: str)
+        +change_var_text(text: str)
+        +alert_info(title: str, message: str)
+        +alert_error(title: str, message: str)
+        +alert_warning(title: str, message: str)
+    }
+    class ChangeTextView {
+        -master: tkinter.ttk.Frame
+        -size: tuple
+        -controller: Controller
+
+        +set_controller(controller: Controller)
+        +change_state_label(state_label: str)
+        +change_text(text: str)
+    }
+    class ChangeInnerDataView {
+        -master: tkinter.ttk.Frame
+        -size: tuple
+        -controller: Controller
+
+        +set_controller(controller: Controller)
+        +change_var_text(text: str)
+    }
+
+    class Controller
+
+    View --o ChangeTextView
+    View --o ChangeInnerDataView
+
+    Controller o--o View
+    Controller o--o Model
+}
+
+package State {
+    class StateBase {
+        -controller: Controller
+        -view: View
+        -context: Context
+        +push_button(): bool
+        +switch_context(): bool
+    }
+    class InitState {
+        +push_button(): bool
+        +switch_context(): bool
+    }
+    class ResultState {
+        +push_button(): bool
+        +switch_context(): bool
+    }
+
+    StateBase <|-- InitState
+    StateBase <|-- ResultState
+}
+
+class Context {
+    -state: StateBase
+    -data: dict
+    -transactins: list
+
+    +get_current_state()
+    +change_state(state: StateBase)
+
+    +register(key: str, obj: Any)
+    +get(key: str)
+    +update(key: str, obj: Any)
+    +delete(key: str)
+    +commit()
+    +rollback()
+}
+
+Controller --o Context
+Context --o StateBase
+
+@enduml
