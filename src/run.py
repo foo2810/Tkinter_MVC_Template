@@ -16,8 +16,6 @@ def main() -> None:
     controller = Controller(view=view, model=Model())
     view.set_controller(controller)
 
-    view.pack()
-
     root.mainloop()
 
 if __name__ == '__main__':

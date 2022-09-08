@@ -39,6 +39,8 @@ class View(ttk.Frame):
 
         self.exit_button = tk.Button(self, text='Exit', command=self.tk_root.destroy)
         self.exit_button.pack(pady=(50, 0))
+
+        self.pack()
     
     def set_controller(self, controller):
         """Set controller
