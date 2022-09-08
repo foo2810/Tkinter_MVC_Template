@@ -24,13 +24,16 @@ class ChangeInnerDataView(ttk.Frame):
 
         super().__init__(master, width=self.size[0], height=self.size[1])
 
+        # Text Entry
         self.text_val = tk.StringVar(self, value='')
         self.entry = tk.Entry(self, textvariable=self.text_val)
         self.entry.pack()
 
+        # Submit button
         self.button = tk.Button(self, text='Submit', command=self._text_input_event)
         self.button.pack()
 
+        # Result text (variable)
         self.text = tk.Label(self, text='')
         self.text.pack()
 

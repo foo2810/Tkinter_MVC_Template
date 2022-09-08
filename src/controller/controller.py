@@ -38,6 +38,8 @@ class Controller:
     def push_button_impl(self) -> bool:
         """Callback of push button event
 
+        State-dependent processing
+
         Returns
         -------
         bool
@@ -48,6 +50,8 @@ class Controller:
     
     def switch_context_impl(self) -> bool:
         """Callback of switch context event
+
+        State-dependent processing
 
         Returns
         -------
@@ -71,20 +75,33 @@ class Controller:
             if success return True, otherwise return False
         """
 
+        # Update "text" (staging)
         self.context.update('text', text)
 
+        # Error check
         if len(text) < 5 or len(text) > 25:
+            # Cancel updating "text" data
             self.context.rollback()
+
+            # Check that "rollback" is working properly
             self.view.change_var_text(
                 text=self.context.get(key='text')
             )
+
+            # Show error dialog
             self.view.alert_error(title='Error', message='text is invalid')
+
             return False
         
+        # Confirm updating "text" data
         self.context.commit()
+
+        # Check that "commit" is working properly
         self.view.change_var_text(
             text=self.context.get(key='text')
         )
+
+        # Show info dialog
         self.view.alert_info(title='Info', message='Success!!')
 
         return True
